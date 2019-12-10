@@ -10,7 +10,7 @@ from check_file_formats import check_file_formats
 import sys
 import argparse
 import datetime
-from EnsembleIDs2GeneCoordinates import get_rna_format_for_3DPredictor
+from get_appropriate_data_formats import get_rna_format_for_3DPredictor
 
 # def createParser():
 #     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description="3DPredictor: A tool for 3D chromatin structure prediction.", epilog="GitHub: https://github.com/labdevgen/3Dpredictor")
@@ -47,22 +47,23 @@ if __name__ == '__main__':
     # model_path = namespace.model_path
     # out_dir=namespace.out_dir
 
-    RNA_seq_file = "Z:/scratch/202001051010polina_data/3DPredictor/input/K562/RNA-seq/test_rna-seqPolyA.tsvpre.txt"
+    RNA_seq_file_raw = "Z:/scratch/202001051010polina_data/3DPredictor/input/K562/RNA-seq/test_rna-seqPolyA.tsvpre.txt"
     CTCF_file = "Z:/scratch/202001051010polina_data/3DPredictor/input/K562/CTCF/wgEncodeAwgTfbsHaibK562CtcfcPcr1xUniPk.narrowPeak.gz"
     # CTCF_orient_file = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/input/K562/CTCF/wgEncodeAwgTfbsHaibK562CtcfcPcr1xUniPk.narrowPeak-orient.bed"
-    CTCF_orient_file = "path to generated CTCF_orient_file"
     chr= "chr14"
     interval_start = "60600000"
     interval_end = "61200000"
     genome_assembly = "hg19"
-
     model_path = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/out/models/models up to 15.11.19/5662021667"
     out_dir="/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/out/"
 
     # Check file formats
-    check_file_formats(RNA_seq_file, CTCF_file)
-    get_rna_format_for_3DPredictor(RNA_seq_file, genome_assembly)
-    raise
+    check_file_formats(RNA_seq_file_raw, CTCF_file)
+    #prepare appropriate rna-seq format file
+    get_rna_format_for_3DPredictor(RNA_seq_file_raw, genome_assembly)
+    #here should be orient file preparation
+    CTCF_orient_file = "input/temp_files_for_prediction/RNAseq_pre.txt"
+    RNA_seq_file = "input/temp_files_for_prediction/RNAseq_pre.txt"
 
     params = Parameters()
     resolution = 5000

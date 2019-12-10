@@ -1,0 +1,3 @@
+gimme scan /media/sf_Polina/mouse\ data\ for\ TargetFinder/chip-seq\ data\ encode/ES/CTCF_BRUCE4/ENCFF926DQD.bed -g mm10 -p ~/CTCF.pwm_fromJASPAR2016  -n 10 -b > CTCF_orient.bed
+
+http://gimmemotifs.readthedocs.io/en/master/
