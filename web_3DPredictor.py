@@ -10,6 +10,7 @@ from check_file_formats import check_file_formats
 import sys
 import argparse
 import datetime
+from EnsembleIDs2GeneCoordinates import get_rna_format_for_3DPredictor
 
 # def createParser():
 #     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description="3DPredictor: A tool for 3D chromatin structure prediction.", epilog="GitHub: https://github.com/labdevgen/3Dpredictor")
@@ -18,7 +19,8 @@ import datetime
 #     Default_parser = subparsers.add_parser ('Predictor', help='3D Predictor')
 #     Default_parser.add_argument ('-N', '--rna-seq', required=True, dest="RNA_seq_file", help='RNA-Seq File')
 #     Default_parser.add_argument ('-C', '--ctcf', required=True, dest="CTCF_file", help='CTCF File')
-#     Default_parser.add_argument ('-O', '--orient', required=True, dest="CTCF_orient_file", help='CTCF Orientation File')
+#     Default_parser.add_argument ('-g', '--ctcf_genome_assembly', required=True, dest="genome_assembly", help='genome assembly')
+#     #  Default_parser.add_argument ('-O', '--orient', required=True, dest="CTCF_orient_file", help='CTCF Orientation File')
 #     Default_parser.add_argument ('-c', '--chrom', required=True, dest="chr", help='Chromosome')
 #     Default_parser.add_argument ('-s', '--start', required=True, dest="interval_start", help='Start Position')
 #     Default_parser.add_argument ('-e', '--end', required=True, dest="interval_end", help='End Position')
@@ -45,21 +47,25 @@ if __name__ == '__main__':
     # model_path = namespace.model_path
     # out_dir=namespace.out_dir
 
-    RNA_seq_file = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/input/K562/RNA-seq/test_rna-seqPolyA.tsvpre.txt"
-    CTCF_file = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/input/K562/CTCF/wgEncodeAwgTfbsHaibK562CtcfcPcr1xUniPk.narrowPeak.gz"
-    CTCF_orient_file = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/input/K562/CTCF/wgEncodeAwgTfbsHaibK562CtcfcPcr1xUniPk.narrowPeak-orient.bed"
+    RNA_seq_file = "Z:/scratch/202001051010polina_data/3DPredictor/input/K562/RNA-seq/test_rna-seqPolyA.tsvpre.txt"
+    CTCF_file = "Z:/scratch/202001051010polina_data/3DPredictor/input/K562/CTCF/wgEncodeAwgTfbsHaibK562CtcfcPcr1xUniPk.narrowPeak.gz"
+    # CTCF_orient_file = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/input/K562/CTCF/wgEncodeAwgTfbsHaibK562CtcfcPcr1xUniPk.narrowPeak-orient.bed"
+    CTCF_orient_file = "path to generated CTCF_orient_file"
     chr= "chr14"
     interval_start = "60600000"
     interval_end = "61200000"
+    genome_assembly = "hg19"
 
     model_path = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/out/models/models up to 15.11.19/5662021667"
     out_dir="/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/out/"
 
     # Check file formats
-    check_file_formats(RNA_seq_file, CTCF_file, CTCF_orient_file)
+    check_file_formats(RNA_seq_file, CTCF_file)
+    get_rna_format_for_3DPredictor(RNA_seq_file, genome_assembly)
+    raise
 
     params = Parameters()
-    resolution = "5000"
+    resolution = 5000
     params.window_size = int(resolution) #region around contact to be binned for predictors
     params.mindist = int(resolution)*2+1 #minimum distance between contacting regions
     params.maxdist = 1500000 #maximum distance between contacting regions
