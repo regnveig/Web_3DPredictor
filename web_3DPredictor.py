@@ -1,5 +1,9 @@
 import logging
 import pandas as pd
+import sys
+import os
+sourcedir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])),"3Dpredictor/source")
+sys.path.append(sourcedir)
 from ChiPSeqReader import ChiPSeqReader
 import pickle
 from PredictorGenerators import SmallChipSeqPredictorGenerator, SitesOrientPredictorGenerator, OrientBlocksPredictorGenerator,ConvergentPairPredictorGenerator
@@ -7,7 +11,7 @@ from shared import Interval, Parameters
 from RNASeqReader import RNAseqReader
 from DataGenerator import DataGenerator
 from check_file_formats import check_file_formats
-import sys
+
 import argparse
 import datetime
 from get_appropriate_data_formats import get_rna_format_for_3DPredictor
