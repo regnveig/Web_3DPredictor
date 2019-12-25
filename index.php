@@ -1,27 +1,12 @@
 <html lang="en">
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-153865145-1"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-153865145-1');
-</script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <meta charset="utf8">
 <meta name="description" content="Bioinformatics ML-based tool for chromatin structure prediction on RNA-Seq and CTCF data.">
 <meta name="keywords" content="bioinformatics, chromatin structure, RNA-Seq, CTCF, HiC, 3D, ML, biology, online, tool">
 <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300">
 <link rel="stylesheet" href="https://purecss.io/css/main.css">
-<script src="https://www.google.com/recaptcha/api.js?render=6Le-ZMYUAAAAAHb6KNwD3WhpDgn4XmiF8Dje0-1n"></script>
-<script>
-grecaptcha.ready(function () {
-grecaptcha.execute('6Le-ZMYUAAAAAHb6KNwD3WhpDgn4XmiF8Dje0-1n', { action: 'send' }).then(function (token) {
-var recaptchaResponse = document.getElementById('recaptchaResponse');
-recaptchaResponse.value = token;
-});
-});
-</script>
 <title>3DPredictor Online | A tool for 3D chromatin structure prediction</title>
 <script>
 function MenuClick(item) {
@@ -52,7 +37,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 </ul>
 </div>
 <!-- PREDICTOR BLOCK -->
-<form id="predictor" class="pure-form pure-form-aligned" action="send.php" method="post" target="result">
+<form id="predictor" class="pure-form pure-form-aligned" action="./send.php" method="post" target="result">
 <fieldset style="padding: 2em;">
 <!-- RNA-Seq -->
 <div class="pure-control-group" title="RNA Seq Data. Format here">
@@ -77,15 +62,20 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <!-- Coordinates -->
 <div class="pure-control-group" title="Coordinates">
 <label for="coordinates" class="pure-u-1-3" style="text-align: left;">Coordinates</label>
-<input type="text" id="coordinates" name="coordinates" maxlength="100" placeholder="chr17:29,421,945-29,709,134" pattern="^[\w]+:[\d]{1,3}(,[\d]{3})*-[\d]{1,3}(,[\d]{3})*$" class="pure-input-2-3" style="height: 2.5em;" required>
+<input type="text" id="coordinates" name="coordinates" maxlength="100" placeholder="chr17:29,421,945-29,709,134" pattern="^chr[\w]+:[\d]{1,3}(,[\d]{3})*-[\d]{1,3}(,[\d]{3})*$" class="pure-input-2-3" style="height: 2.5em;" required>
 </div>
 <!-- Model -->
 <div class="pure-control-group" title="Model">
 <label for="model" class="pure-u-1-3" style="text-align: left;">Model</label>
-<select id="model" class="pure-input-2-3" style="height: 2.5em;">
-<option>AL</option>
-<option>CA</option>
-<option>IL</option>
+<select id="model" name="model" class="pure-input-2-3" style="height: 2.5em;">
+<?php
+$f_pointer=fopen("./models_description.txt","r");
+$cap=fgetcsv($f_pointer,0,"\t");
+while(!feof($f_pointer)){
+	$ar=fgetcsv($f_pointer,0,"\t");
+	if($ar[0]!="") { echo "<option value=\"".$ar[1]."\">".$ar[0]."</option>"; }
+}
+?>
 </select>
 </div>
 <div style="height: 2em;"></div>
@@ -96,11 +86,10 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 </div>
 <!-- Result -->
 <div class="pure-control-group">
-<iframe name="result" src="" style="height: 3em; width: 100%; " frameborder="0"></iframe>
+<iframe name="result" src="" style="height: 3em; width: 100%; " frameborder="1"></iframe>
 </div>
 <!-- Fork us -->
 <div>Fork us on <a href="https://github.com/labdevgen/3Dpredictor" target="_blank">GitHub</a>!</div>
-<input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 </fieldset>
 </form>
 <!-- HOWTO BLOCK -->
