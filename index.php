@@ -44,7 +44,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <label for="rna-seq_line" class="pure-u-1-3" style="text-align: left;">RNA Seq Data</label>
 <span name="rna-seq_line" style="display: inline-block; text-align: left;" class="pure-radio pure-input-1-3">
 <input id="rna_local_option" type="radio" name="rna_upload_type" value="local" onchange="document.getElementById('rna_local').style.display = 'inline-block'; document.getElementById('rna_ftp').style.display = 'none';" checked> Local&emsp;
-<input id="rna_ftp_option" type="radio" name="rna_upload_type" value="ftp" onchange="document.getElementById('rna_local').style.display = 'none'; document.getElementById('rna_ftp').style.display = 'inline-block';"> FTP&emsp;
+<input id="rna_ftp_option" type="radio" name="rna_upload_type" value="ftp" onchange="document.getElementById('rna_local').style.display = 'none'; document.getElementById('rna_ftp').style.display = 'inline-block';" disabled> FTP&emsp;
 </span>
 <input id="rna_local" type="file" name="rna_local" style="display: inline-block; height: 2.5em;" class="pure-input-1-3">
 <input id="rna_ftp" type="url" name="rna_ftp" placeholder="http://your.site/file.csv" style="display: none;  height: 2.5em;" class="pure-input-1-3">
@@ -54,7 +54,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <label for="ctcf_line" class="pure-u-1-3" style="text-align: left;">CTCF Data</label>
 <span name="ctcf_line" style="display: inline-block; text-align: left;" class="pure-radio pure-input-1-3">
 <input id="ctcf_local_option" type="radio" name="ctcf_upload_type" value="local" onclick="document.getElementById('ctcf_local').style.display = 'inline-block'; document.getElementById('ctcf_ftp').style.display = 'none';" checked> Local&emsp;
-<input id="ctcf_ftp_option" type="radio" name="ctcf_upload_type" value="ftp" onclick="document.getElementById('ctcf_local').style.display = 'none'; document.getElementById('ctcf_ftp').style.display = 'inline-block';"> FTP&emsp;
+<input id="ctcf_ftp_option" type="radio" name="ctcf_upload_type" value="ftp" onclick="document.getElementById('ctcf_local').style.display = 'none'; document.getElementById('ctcf_ftp').style.display = 'inline-block';" disabled> FTP&emsp;
 </span>
 <input id="ctcf_local" type="file" name="ctcf_local" style="display: inline-block; height: 2.5em;" class="pure-input-1-3">
 <input id="ctcf_ftp" type="url" name="ctcf_ftp" placeholder="http://your.site/file.csv" style="display: none;  height: 2.5em;" class="pure-input-1-3">

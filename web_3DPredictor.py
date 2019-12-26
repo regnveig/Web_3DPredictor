@@ -10,7 +10,7 @@ from PredictorGenerators import SmallChipSeqPredictorGenerator, SitesOrientPredi
 from shared import Interval, Parameters
 from RNASeqReader import RNAseqReader
 from DataGenerator import DataGenerator
-from check_file_formats import check_file_formats
+from check_file_formats import *
 
 import argparse
 import datetime

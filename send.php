@@ -1,5 +1,7 @@
 <?php
 
+echo print_r($_POST);
+
 function rmdir_recursive($dir) {
     foreach(scandir($dir) as $file) {
         if ('.' === $file || '..' === $file) continue;
@@ -58,18 +60,18 @@ $uploaddir = "/sf/storage/server_sorted/".$UID."/";
 mkdir($uploaddir, 0777);
 
 if ($_POST["rna_upload_type"]=="local") {
-if (!move_uploaded_file($_FILES['rna_local']['tmp_name'], $uploaddir."rna_seq.csv")) {
-	echo "<div style=\"color: red;\">Upload local RNA-Seq file is fucked</div>";
-	rmdir_recursive($uploaddir);
-        exit();
-}
+	if (!move_uploaded_file($_FILES['rna_local']['tmp_name'], $uploaddir."rna_seq.csv")) {
+		echo "<div style=\"color: red;\">Upload local RNA-Seq file is fucked</div>";
+		rmdir_recursive($uploaddir);
+        	exit();
+	}
 }
 
 if ($_POST["ctcf_upload_type"]=="local") {
-if (!move_uploaded_file($_FILES['ctcf_local']['tmp_name'], $uploaddir."ctcf.csv")) {
-	echo "<div style=\"color: red;\">Upload local CTCF file is fucked</div>";
-	rmdir_recursive($uploaddir);
-        exit();
+	if (!move_uploaded_file($_FILES['ctcf_local']['tmp_name'], $uploaddir."ctcf.csv")) {
+		echo "<div style=\"color: red;\">Upload local CTCF file is fucked</div>";
+		rmdir_recursive($uploaddir);
+        	exit();
 }
 }
 
