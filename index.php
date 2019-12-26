@@ -37,7 +37,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 </ul>
 </div>
 <!-- PREDICTOR BLOCK -->
-<form id="predictor" class="pure-form pure-form-aligned" action="./send.php" method="post" target="result">
+<form id="predictor" class="pure-form pure-form-aligned" enctype="multipart/form-data" action="./send.php" method="post" target="result">
 <fieldset style="padding: 2em;">
 <!-- RNA-Seq -->
 <div class="pure-control-group" title="RNA Seq Data. Format here">
