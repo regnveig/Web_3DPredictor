@@ -50,7 +50,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <input id="rna_ftp" type="url" name="rna_ftp" placeholder="http://your.site/file.csv" style="display: none;  height: 2.5em;" class="pure-input-1-3">
 </div>
 <!-- CTCF -->
-<div class="pure-control-group" title="RNA Seq Data. Format here">
+<div class="pure-control-group" title="CTCF Data. Format here">
 <label for="ctcf_line" class="pure-u-1-3" style="text-align: left;">CTCF Data</label>
 <span name="ctcf_line" style="display: inline-block; text-align: left;" class="pure-radio pure-input-1-3">
 <input id="ctcf_local_option" type="radio" name="ctcf_upload_type" value="local" onclick="document.getElementById('ctcf_local').style.display = 'inline-block'; document.getElementById('ctcf_ftp').style.display = 'none';" checked> Local&emsp;
@@ -58,6 +58,20 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 </span>
 <input id="ctcf_local" type="file" name="ctcf_local" style="display: inline-block; height: 2.5em;" class="pure-input-1-3">
 <input id="ctcf_ftp" type="url" name="ctcf_ftp" placeholder="http://your.site/file.csv" style="display: none;  height: 2.5em;" class="pure-input-1-3">
+</div>
+<!--Genome version-->
+<div class="pure-control-group" title="CTCF genome version">
+<label for="genome_version" class="pure-u-1-3" style="text-align: left;">Genome</label>
+<select id="genome_version" name="genome_version" class="pure-input-2-3" style="height: 2.5em;">
+<?php
+$f_pointer=fopen("./genome_versions.txt","r");
+$cap=fgetcsv($f_pointer,0,"\t");
+while(!feof($f_pointer)){
+        $ar=fgetcsv($f_pointer,0,"\t");
+        if($ar[0]!="") { echo "<option value=\"".$ar[1]."\">".$ar[0]."</option>"; }
+}
+?>
+</select>
 </div>
 <!-- Coordinates -->
 <div class="pure-control-group" title="Coordinates">
@@ -93,7 +107,12 @@ while(!feof($f_pointer)){
 </fieldset>
 </form>
 <!-- HOWTO BLOCK -->
-<div id="howto_content" style="display: none; padding: 2em;">Hello! This is howto.</div>
+<div id="howto_content" style="display: none; padding: 2em;">
+<?php
+$howto = file_get_contents('howto.txt');
+echo $howto;
+?>
+</div>
 <!-- ABOUT BLOCK -->
 <div id="about_content" style="display: none; padding: 2em; text-align: left;">
 <h3>Article</h3>

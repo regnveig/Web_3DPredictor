@@ -29,7 +29,9 @@ while(!feof($f_pointer)){
 }
 
 $email=$_POST["email"];
+$genome_assembly=$_POST["genome_version"];
 
+echo "<b>Genome:</b> ".$genome_assembly."<br>";
 echo "<b>Chrom:</b> ".$chr."<br>";
 echo "<b>Interval Start:</b> ".$interval_start."<br>";
 echo "<b>Interval End:</b> ".$interval_end."<br>";
