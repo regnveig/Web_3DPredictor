@@ -5,7 +5,7 @@ import sys
 
 # RNA_seq_file = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/input/K562/RNA-seq/test_rna-seqPolyA.tsvpre.txt"
 
-def get_rna_format_for_3DPredictor(RNAseq_file, genome_assembly):
+def get_rna_format_for_3DPredictor(RNAseq_file, output_file, genome_assembly):
     RNAseq_data = pd.read_csv(RNAseq_file, sep="\t")
     gene_id_field = 'gene_id'
     RNAseq_data["Gene_ID"] = RNAseq_data[gene_id_field].apply(lambda x: x.split(".")[0])
@@ -15,4 +15,11 @@ def get_rna_format_for_3DPredictor(RNAseq_file, genome_assembly):
     if len(FinalData) != len(RNAseq_data):
         logging.getLogger(__name__).warning("Some data missing in Ensembl, "+str(len(RNAseq_data)-len(FinalData)) + " out of "+str(len(RNAseq_data)))
     
-    FinalData.to_csv("input/temp_files_for_prediction/RNAseq_pre.txt",sep="\t",index=False)
+    FinalData.to_csv(output_file, sep="\t",index=False)
+
+if __name__ == "__main__": 
+    try:
+        get_rna_format_for_3DPredictor(sys.argv[1], sys.argv[2], sys.argv[3])
+        sys.exit(0)
+    except:
+        sys.exit(1)

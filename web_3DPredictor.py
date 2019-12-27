@@ -58,10 +58,6 @@ if __name__ == '__main__':
     # model_path = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/out/models/models up to 15.11.19/5662021667"
     # out_dir="/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/out/"
 
-    # Check file formats
-    check_file_formats(RNA_seq_file_raw, CTCF_file)
-    #prepare appropriate rna-seq format file
-    get_rna_format_for_3DPredictor(RNA_seq_file_raw, genome_assembly)
     #here should be orient file preparation
     CTCF_orient_file = "input/temp_files_for_prediction/RNAseq_pre.txt"
     RNA_seq_file = "input/temp_files_for_prediction/RNAseq_pre.txt"
