@@ -1,9 +1,7 @@
 from pybiomart import Dataset, Server
-import  pandas as pd
+import pandas as pd
 import logging
 import sys
-
-# RNA_seq_file = "/mnt/scratch/ws/psbelokopytova/202001051010polina_data/3DPredictor/input/K562/RNA-seq/test_rna-seqPolyA.tsvpre.txt"
 
 def get_rna_format_for_3DPredictor(RNAseq_file, output_file, genome_assembly):
     RNAseq_data = pd.read_csv(RNAseq_file, sep="\t")

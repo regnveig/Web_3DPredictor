@@ -3,22 +3,22 @@
 echo print_r($_POST);
 
 function rmdir_recursive($dir) {
-    foreach(scandir($dir) as $file) {
-        if ('.' === $file || '..' === $file) continue;
-        if (is_dir("$dir/$file")) rmdir_recursive("$dir/$file");
-        else unlink("$dir/$file");
-    }
-    rmdir($dir);
+	foreach(scandir($dir) as $file) {
+		if ('.' === $file || '..' === $file) continue;
+		if (is_dir("$dir/$file")) rmdir_recursive("$dir/$file");
+		else unlink("$dir/$file");
+	}
+	rmdir($dir);
 }
 
 function generateRandomString($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$charactersLength = strlen($characters);
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, $charactersLength - 1)];
+	}
+	return $randomString;
 }
 
 $C_MIN_INTERVAL=20000;
@@ -31,7 +31,7 @@ $be=explode(':', $coord)[1];
 $interval_start=intval(preg_replace("/[,]/", "", explode('-', $be)[0]));
 $interval_end=intval(preg_replace("/[,]/", "", explode('-', $be)[1]));
 if(($interval_end-$interval_start)<$C_MIN_INTERVAL) {
-	echo "<div style=\"color: red;\">Bad chromosome interval (must be more than ".strval($C_MIN_INTERVAL)." bp)</div>";
+	echo "<div style=\"color: red;\">Bad chromosome interval (must be longer than ".strval($C_MIN_INTERVAL)." bp)</div>";
 	exit();
 }
 $model_path="/sf/storage/Web_3DPredictor/trained_models_for_web_3DPredictor/".$_POST["model"];
@@ -39,7 +39,7 @@ $model_path="/sf/storage/Web_3DPredictor/trained_models_for_web_3DPredictor/".$_
 $f_pointer=fopen("./models_description.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
 while(!feof($f_pointer)){
-        $ar=fgetcsv($f_pointer,0,"\t");
+	$ar=fgetcsv($f_pointer,0,"\t");
 	if($ar[1]==$_POST["model"]) { 
 		$forbidden=explode(",", $ar[4]);
 		$chr_number=substr($chr, 3);
@@ -63,7 +63,7 @@ if ($_POST["rna_upload_type"]=="local") {
 	if (!move_uploaded_file($_FILES['rna_local']['tmp_name'], $uploaddir."rna_seq.csv")) {
 		echo "<div style=\"color: red;\">Upload local RNA-Seq file is fucked</div>";
 		rmdir_recursive($uploaddir);
-        	exit();
+		exit();
 	}
 }
 
@@ -71,9 +71,11 @@ if ($_POST["ctcf_upload_type"]=="local") {
 	if (!move_uploaded_file($_FILES['ctcf_local']['tmp_name'], $uploaddir."ctcf.csv")) {
 		echo "<div style=\"color: red;\">Upload local CTCF file is fucked</div>";
 		rmdir_recursive($uploaddir);
-        	exit();
+		exit();
+	}
 }
-}
+
+// FILES CHECK
 
 echo "<b>Genome:</b> ".$genome_assembly."<br>";
 echo "<b>Chrom:</b> ".$chr."<br>";

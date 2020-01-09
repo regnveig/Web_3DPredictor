@@ -119,5 +119,5 @@ if __name__ == '__main__':
     except Exception as e:
         print("Exception: ", end="", file=sys.stderr)
         print(type(e), end="", file=sys.stderr)
-        print(e.args, end="", file=sys.stderr)
+        print(e.args, end="\n", file=sys.stderr)
         sys.exit(1)

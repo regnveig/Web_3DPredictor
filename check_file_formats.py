@@ -27,7 +27,7 @@ def check_file_formats(RNAseq_file, CTCF_file):
     if RNA_seq_data is None: sys.exit(1)
     
     if "gene_id" and "FPKM" not in set(RNA_seq_data.keys()):
-        print("RNA-seq file does not contain nessesary fields (FPKM and/or gene_id)", file=sys.stderr)
+        print("RNA-seq file does not contain necessary fields (FPKM and/or gene_id)", file=sys.stderr)
         sys.exit(1)
 
     #check CTCF file
