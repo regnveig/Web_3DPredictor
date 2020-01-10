@@ -77,6 +77,22 @@ if ($_POST["ctcf_upload_type"]=="local") {
 
 // FILES CHECK
 
+$command = '/sf/storage/Web_3DPredictor/env/bin/activate; /sf/storage/Web_3DPredictor/env/bin/python3 /sf/storage/Web_3DPredictor/check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
+$output = exec($command, $output, $exit_code);
+if ($exit_code!=0) {
+	echo "<div style=\"color: red;\">".$output."</div>";
+	rmdir_recursive($uploaddir);
+	exit();
+}
+
+// EXEC PIPELINE
+
+$cmd = 'nohup echo "Pizdec!" > '.$uploaddir.'/pizdex.txt';
+shell_exec($cmd);
+
+echo "<div style=\"color: green;\">Looks like most things are correct, wait for email :)</div>";
+
+
 echo "<b>Genome:</b> ".$genome_assembly."<br>";
 echo "<b>Chrom:</b> ".$chr."<br>";
 echo "<b>Interval Start:</b> ".$interval_start."<br>";
