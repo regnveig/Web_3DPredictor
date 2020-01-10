@@ -1,7 +1,5 @@
 <?php
 
-echo print_r($_POST);
-
 function rmdir_recursive($dir) {
 	foreach(scandir($dir) as $file) {
 		if ('.' === $file || '..' === $file) continue;
@@ -34,7 +32,7 @@ if(($interval_end-$interval_start)<$C_MIN_INTERVAL) {
 	echo "<div style=\"color: red;\">Bad chromosome interval (must be longer than ".strval($C_MIN_INTERVAL)." bp)</div>";
 	exit();
 }
-$model_path="/sf/storage/Web_3DPredictor/trained_models_for_web_3DPredictor/".$_POST["model"];
+$model_path="./trained_models_for_web_3DPredictor/".$_POST["model"];
 
 $f_pointer=fopen("./models_description.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
@@ -56,7 +54,7 @@ $genome_assembly=$_POST["genome_version"];
 // FILES UPLOAD
 
 $UID=generateRandomString(16);
-$uploaddir = "/sf/storage/server_sorted/".$UID."/";
+$uploaddir = "./_temp/".$UID."/";
 mkdir($uploaddir, 0777);
 
 if ($_POST["rna_upload_type"]=="local") {
@@ -77,7 +75,7 @@ if ($_POST["ctcf_upload_type"]=="local") {
 
 // FILES CHECK
 
-$command = '/sf/storage/Web_3DPredictor/env/bin/activate; /sf/storage/Web_3DPredictor/env/bin/python3 /sf/storage/Web_3DPredictor/check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
+$command = './env/bin/activate; ./env/bin/python3 ./check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
 $output = exec($command, $output, $exit_code);
 if ($exit_code!=0) {
 	echo "<div style=\"color: red;\">".$output."</div>";

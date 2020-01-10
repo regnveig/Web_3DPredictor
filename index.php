@@ -1,13 +1,8 @@
 <html lang="en">
+
 <head>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<meta charset="utf8">
-<meta name="description" content="Bioinformatics ML-based tool for chromatin structure prediction on RNA-Seq and CTCF data.">
-<meta name="keywords" content="bioinformatics, chromatin structure, RNA-Seq, CTCF, HiC, 3D, ML, biology, online, tool">
-<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300">
-<link rel="stylesheet" href="https://purecss.io/css/main.css">
-<title>3DPredictor Online | A tool for 3D chromatin structure prediction</title>
 <script>
 function MenuClick(item) {
 document.getElementById('predictor').style.display = (item == 'tool') ? 'block' : 'none';
@@ -19,15 +14,29 @@ if (item != 'howto') { document.getElementById('howto').classList.remove('pure-m
 if (item != 'about') { document.getElementById('about').classList.remove('pure-menu-selected'); }
 }
 </script>
+
+<meta charset="utf8">
+<meta name="description" content="Bioinformatics ML-based tool for chromatin structure prediction on RNA-Seq and CTCF data.">
+<meta name="keywords" content="bioinformatics, chromatin structure, RNA-Seq, CTCF, HiC, 3D, ML, biology, online, tool">
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300">
+<link rel="stylesheet" href="https://purecss.io/css/main.css">
+
+<title>3DPredictor Online | A tool for 3D chromatin structure prediction</title>
+
 </head>
+
 <body onload="document.getElementById('predictor').reset();">
 <table width=100% height=100%><tr><td align="center">
 <div style="width: 700px; height:800px;">
+
 <!-- HEADER -->
 <div class="header" style="border-bottom: 0px;">
 <h1><span style="display: inline-block; color: rgb(223, 117, 20); font-weight: bold; font-size:118%;">3D</span>Predictor</h1>
 <h2>A tool for 3D chromatin structure prediction.</h2>
 </div>
+
 <!-- MENU -->
 <div class="pure-menu pure-menu-horizontal" style="height: 30px;">
 <ul class="pure-menu-list">
@@ -36,9 +45,11 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <li id="about" class="pure-menu-item" onclick="MenuClick('about');"><a href="#" class="pure-menu-link">About</a></li>
 </ul>
 </div>
+
 <!-- PREDICTOR BLOCK -->
 <form id="predictor" class="pure-form pure-form-aligned" enctype="multipart/form-data" action="./send.php" method="post" target="result">
 <fieldset style="padding: 2em;">
+
 <!-- RNA-Seq -->
 <div class="pure-control-group" title="RNA Seq Data. Format here">
 <label for="rna-seq_line" class="pure-u-1-3" style="text-align: left;">RNA Seq Data</label>
@@ -49,6 +60,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <input id="rna_local" type="file" name="rna_local" style="display: inline-block; height: 2.5em;" class="pure-input-1-3">
 <input id="rna_ftp" type="url" name="rna_ftp" placeholder="http://your.site/file.csv" style="display: none;  height: 2.5em;" class="pure-input-1-3">
 </div>
+
 <!-- CTCF -->
 <div class="pure-control-group" title="CTCF Data. Format here">
 <label for="ctcf_line" class="pure-u-1-3" style="text-align: left;">CTCF Data</label>
@@ -59,6 +71,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <input id="ctcf_local" type="file" name="ctcf_local" style="display: inline-block; height: 2.5em;" class="pure-input-1-3">
 <input id="ctcf_ftp" type="url" name="ctcf_ftp" placeholder="http://your.site/file.csv" style="display: none;  height: 2.5em;" class="pure-input-1-3">
 </div>
+
 <!--Genome version-->
 <div class="pure-control-group" title="CTCF genome version">
 <label for="genome_version" class="pure-u-1-3" style="text-align: left;">Genome</label>
@@ -67,17 +80,21 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 $f_pointer=fopen("./genome_versions.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
 while(!feof($f_pointer)){
-        $ar=fgetcsv($f_pointer,0,"\t");
-        if($ar[0]!="") { echo "<option value=\"".$ar[1]."\">".$ar[0]."</option>"; }
+	$ar=fgetcsv($f_pointer,0,"\t");
+	if($ar[0]!="") { 
+		echo "<option value=\"".$ar[1]."\">".$ar[0]."</option>"; 
+	}
 }
 ?>
 </select>
 </div>
+
 <!-- Coordinates -->
 <div class="pure-control-group" title="Coordinates">
 <label for="coordinates" class="pure-u-1-3" style="text-align: left;">Coordinates</label>
 <input type="text" id="coordinates" name="coordinates" maxlength="100" placeholder="chr17:29,421,945-29,709,134" pattern="^chr[\w]+:[\d]{1,3}(,[\d]{3})*-[\d]{1,3}(,[\d]{3})*$" class="pure-input-2-3" style="height: 2.5em;" required>
 </div>
+
 <!-- Model -->
 <div class="pure-control-group" title="Model">
 <label for="model" class="pure-u-1-3" style="text-align: left;">Model</label>
@@ -87,25 +104,32 @@ $f_pointer=fopen("./models_description.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
 while(!feof($f_pointer)){
 	$ar=fgetcsv($f_pointer,0,"\t");
-	if($ar[0]!="") { echo "<option value=\"".$ar[1]."\">".$ar[0]."</option>"; }
+	if($ar[0]!="") {
+		echo "<option value=\"".$ar[1]."\">".$ar[0]."</option>";
+	}
 }
 ?>
 </select>
 </div>
+
 <div style="height: 2em;"></div>
+
 <!-- Email -->
 <div class="pure-control-group">
 <input type="email" name="email" class="pure-input-rounded pure-input-1-3" maxlength="255" placeholder="Your email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}$" required>
 <input type="submit" class="pure-button pure-input-rounded pure-button-primary pure-input-1-6" value="Get Prediction!">
 </div>
+
 <!-- Result -->
 <div class="pure-control-group">
 <iframe name="result" src="" style="height: 3em; width: 100%; " frameborder="1"></iframe>
 </div>
+
 <!-- Fork us -->
 <div>Fork us on <a href="https://github.com/labdevgen/3Dpredictor" target="_blank">GitHub</a>!</div>
 </fieldset>
 </form>
+
 <!-- HOWTO BLOCK -->
 <div id="howto_content" style="display: none; padding: 2em;">
 <?php
@@ -113,6 +137,7 @@ $howto = file_get_contents('howto.txt');
 echo $howto;
 ?>
 </div>
+
 <!-- ABOUT BLOCK -->
 <div id="about_content" style="display: none; padding: 2em; text-align: left;">
 <h3>Article</h3>
@@ -129,7 +154,9 @@ Using multiple metrics, we confirmed that our algorithm could efficiently predic
 <p>Polina Belokopytova, Emil Valeev</p>
 <p><a href="mailto:regnveig@yandex.ru?subject=3DPredictor Online Feedback, session ID: <?php echo (rand(10000, 32767))?>" target="_blank">Contact</a></p>
 </div>
+
 </div>
 </td></tr></table>
+
 </body>
 </html>
