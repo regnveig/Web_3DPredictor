@@ -1,0 +1,4 @@
+caption	name	species
+GRCh37/hg19	hg19	human
+GRCh38/hg38	hg38	human
+GRCm38/mm10	mm10	mouse
