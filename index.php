@@ -47,7 +47,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 </div>
 
 <!-- PREDICTOR BLOCK -->
-<form id="predictor" class="pure-form pure-form-aligned" enctype="multipart/form-data" action="./send.php" method="post" target="result">
+<form id="predictor" class="pure-form pure-form-aligned" enctype="multipart/form-data" action="send.php" method="post" target="result">
 <fieldset style="padding: 2em;">
 
 <!-- RNA-Seq -->
@@ -77,7 +77,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <label for="genome_version" class="pure-u-1-3" style="text-align: left;">Genome</label>
 <select id="genome_version" name="genome_version" class="pure-input-2-3" style="height: 2.5em;">
 <?php
-$f_pointer=fopen("./genome_versions.txt","r");
+$f_pointer=fopen("genome_versions.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
 while(!feof($f_pointer)){
 	$ar=fgetcsv($f_pointer,0,"\t");
@@ -100,7 +100,7 @@ while(!feof($f_pointer)){
 <label for="model" class="pure-u-1-3" style="text-align: left;">Model</label>
 <select id="model" name="model" class="pure-input-2-3" style="height: 2.5em;">
 <?php
-$f_pointer=fopen("./models_description.txt","r");
+$f_pointer=fopen("trained_models_for_web_3DPredictor/models_description.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
 while(!feof($f_pointer)){
 	$ar=fgetcsv($f_pointer,0,"\t");

@@ -34,7 +34,7 @@ if(($interval_end-$interval_start)<$C_MIN_INTERVAL) {
 }
 $model_path="./trained_models_for_web_3DPredictor/".$_POST["model"];
 
-$f_pointer=fopen("./models_description.txt","r");
+$f_pointer=fopen("trained_models_for_web_3DPredictor/models_description.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
 while(!feof($f_pointer)){
 	$ar=fgetcsv($f_pointer,0,"\t");
@@ -75,7 +75,7 @@ if ($_POST["ctcf_upload_type"]=="local") {
 
 // FILES CHECK
 
-$command = './env/bin/activate; ./env/bin/python3 ./check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
+$command = './_pyenv/bin/activate; ./_pyenv/bin/python3 check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
 $output = exec($command, $output, $exit_code);
 if ($exit_code!=0) {
 	echo "<div style=\"color: red;\">".$output."</div>";
@@ -85,16 +85,8 @@ if ($exit_code!=0) {
 
 // EXEC PIPELINE
 
-$cmd = 'nohup echo "Pizdec!" > '.$uploaddir.'/pizdex.txt';
+$cmd = 'screen -dm ./pipeline.sh '.$uploaddir.' '.$genome_assembly.' '.$chr.' '.$interval_start.' '.$interval_end.' '.$model_path.' '.$email;
 shell_exec($cmd);
 
 echo "<div style=\"color: green;\">Looks like most things are correct, wait for email :)</div>";
-
-
-echo "<b>Genome:</b> ".$genome_assembly."<br>";
-echo "<b>Chrom:</b> ".$chr."<br>";
-echo "<b>Interval Start:</b> ".$interval_start."<br>";
-echo "<b>Interval End:</b> ".$interval_end."<br>";
-echo "<b>Model path:</b> ".$model_path."<br>";
-echo "<b>Email:</b> ".$email."<br>";
 ?>
