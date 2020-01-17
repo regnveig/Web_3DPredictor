@@ -122,7 +122,7 @@ while(!feof($f_pointer)){
 
 <!-- Result -->
 <div class="pure-control-group">
-<iframe name="result" src="" style="height: 3em; width: 100%; " frameborder="1"></iframe>
+<iframe name="result" src="" style="height: 3em; width: 100%; " frameborder="0"></iframe>
 </div>
 
 <!-- Fork us -->

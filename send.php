@@ -29,10 +29,10 @@ $be=explode(':', $coord)[1];
 $interval_start=intval(preg_replace("/[,]/", "", explode('-', $be)[0]));
 $interval_end=intval(preg_replace("/[,]/", "", explode('-', $be)[1]));
 if(($interval_end-$interval_start)<$C_MIN_INTERVAL) {
-	echo "<div style=\"color: red;\">Bad chromosome interval (must be longer than ".strval($C_MIN_INTERVAL)." bp)</div>";
+	echo "<div style=\"color: red; text-align: center;\">Bad chromosome interval (must be longer than ".strval($C_MIN_INTERVAL)." bp)</div>";
 	exit();
 }
-$model_path="./trained_models_for_web_3DPredictor/".$_POST["model"];
+$model_path=$_POST["model"];
 
 $f_pointer=fopen("trained_models_for_web_3DPredictor/models_description.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
@@ -42,7 +42,7 @@ while(!feof($f_pointer)){
 		$forbidden=explode(",", $ar[4]);
 		$chr_number=substr($chr, 3);
 		if(in_array($chr_number, $forbidden)) {
-			echo "<div style=\"color: red;\">Bad chromosome (used in training), please choose another model</div>";
+			echo "<div style=\"color: red; text-align: center;\">Bad chromosome number (used in training), please choose another model</div>";
 			exit();
 		}
 	}
@@ -59,7 +59,7 @@ mkdir($uploaddir, 0777);
 
 if ($_POST["rna_upload_type"]=="local") {
 	if (!move_uploaded_file($_FILES['rna_local']['tmp_name'], $uploaddir."rna_seq.csv")) {
-		echo "<div style=\"color: red;\">Upload local RNA-Seq file is fucked</div>";
+		echo "<div style=\"color: red; text-align: center;\">Upload local RNA-Seq file is failed</div>";
 		rmdir_recursive($uploaddir);
 		exit();
 	}
@@ -67,7 +67,7 @@ if ($_POST["rna_upload_type"]=="local") {
 
 if ($_POST["ctcf_upload_type"]=="local") {
 	if (!move_uploaded_file($_FILES['ctcf_local']['tmp_name'], $uploaddir."ctcf.csv")) {
-		echo "<div style=\"color: red;\">Upload local CTCF file is fucked</div>";
+		echo "<div style=\"color: red; text-align: center;\">Upload local CTCF file is failed</div>";
 		rmdir_recursive($uploaddir);
 		exit();
 	}
@@ -78,15 +78,15 @@ if ($_POST["ctcf_upload_type"]=="local") {
 $command = './_pyenv/bin/activate; ./_pyenv/bin/python3 check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
 $output = exec($command, $output, $exit_code);
 if ($exit_code!=0) {
-	echo "<div style=\"color: red;\">".$output."</div>";
+	echo "<div style=\"color: red; text-align: center;\">".$output."</div>";
 	rmdir_recursive($uploaddir);
 	exit();
 }
 
 // EXEC PIPELINE
 
-$cmd = 'screen -dm ./pipeline.sh '.$uploaddir.' '.$genome_assembly.' '.$chr.' '.$interval_start.' '.$interval_end.' '.$model_path.' '.$email;
+$cmd = 'screen -dm ./pipeline.sh '.$uploaddir.' '.$genome_assembly.' '.$chr.' '.$interval_start.' '.$interval_end.' '.$model_path.' '.$email.' '.$UID;
 shell_exec($cmd);
 
-echo "<div style=\"color: green;\">Looks like most things are correct, wait for email :)</div>";
+echo "<div style=\"color: green; text-align: center;\">Looks like most things are correct, wait for email :)</div>";
 ?>
