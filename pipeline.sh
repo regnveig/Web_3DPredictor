@@ -13,16 +13,18 @@ INTERVAL_END=$5
 MODEL=$6
 EMAIL=$7
 
-RNA_SEQ_FILE=""$DATA_FOLDER"/rna_seq.csv"
-RNA_SEQ_PRE=""$DATA_FOLDER"/RNAseq_pre.txt"
-CTCF_FILE=""$DATA_FOLDER"/ctcf.csv"
-CTCF_ORIENT_FILE=""$DATA_FOLDER"/ctcf_orient.csv"
-CTCF_WEIGHTS="./CTCF_from_Jaspar2016.pwm"
+RNA_SEQ_FILE=""$DATA_FOLDER"rna_seq.csv"
+RNA_SEQ_PRE=""$DATA_FOLDER"RNAseq_pre.txt"
+CTCF_FILE=""$DATA_FOLDER"ctcf.csv"
+CTCF_CUT_FILE=""$DATA_FOLDER"ctcf_cut.csv"
+CTCF_ORIENT_FILE=""$DATA_FOLDER"ctcf_orient.csv"
+CTCF_ORIENT_PURE_FILE=""$DATA_FOLDER"ctcf_orient_bez_vsyakoy_srani_kotoruyu_pihaet_v_stdout_gimmemotifs.csv"
+CTCF_WEIGHTS="./input/CTCF_from_Jaspar2016.pwm"
 
-MODEL_PATH="./trained_models_for_web_3DPredictor/"$MODEL""
+MODEL_PATH=""$MODEL""
 
-OUT_FILE=""$DATA_FOLDER"/result_predicted.csv"
-LOG_FILE=""$DATA_FOLDER"/log.txt"
+OUT_FILE=""$DATA_FOLDER"result_predicted.csv"
+LOG_FILE=""$DATA_FOLDER"log.txt"
 
 # pipeline
 
@@ -41,25 +43,28 @@ echo "Model path: "$6"" >> $LOG_FILE
 echo "Email: "$7"" >> $LOG_FILE
 echo >> $LOG_FILE
 
-# ctcf orient
-source ./_pyenv/bin/activate gimme >> $LOG_FILE
-gimme scan $CTCF_FILE -g $GENOME -p $CTCF_WEIGHTS  -n 10 -b > $CTCF_ORIENT_FILE 2>> $LOG_FILE
+echo "# ctcf orient" >> $LOG_FILE
+
+source ./_pyenv/bin/activate gimme >> $LOG_FILE 2>> $LOG_FILE
+cut -f 1-7 $CTCF_FILE > $CTCF_CUT_FILE 2>> $LOG_FILE
+gimme scan $CTCF_CUT_FILE -g ./_pyenv/genomes/$GENOME/$GENOME.fa -p $CTCF_WEIGHTS -n 10 -b > $CTCF_ORIENT_FILE 2>> $LOG_FILE
 
 if [[ ${PIPESTATUS[0]} -ne 0 ]];
 then { trap 'echo "Error: gimme stopped with exit code 1" >> $LOG_FILE' EXIT; } fi
 
-conda activate base >> $LOG_FILE
+grep '^[^#].*$' $CTCF_ORIENT_FILE > $CTCF_ORIENT_PURE_FILE 2>> $LOG_FILE
+conda activate base >> $LOG_FILE 2>> $LOG_FILE
 
-# rnaseq file preparation
-python3 get_appropriate_data_formats.py $RNA_SEQ_FILE $RNA_SEQ_PRE $GENOME >> $LOG_FILE
+echo "# rnaseq file preparation" >> $LOG_FILE
+python3 get_appropriate_data_formats.py $RNA_SEQ_FILE $RNA_SEQ_PRE $GENOME >> $LOG_FILE 2>> $LOG_FILE
 
 if [[ ${PIPESTATUS[0]} -ne 0 ]];
 then { trap 'echo "Error: get_appropriate_data_formats.py stopped with exit code 1" >> $LOG_FILE' EXIT; } fi
 
-# PREDICTION
-# python3 web_3DPredictor Predictor -N $RNA_SEQ_PRE -C $CTCF_FILE -o $CTCF_ORIENT_FILE -g $GENOME -c $CHROM -s $INTERVAL_START -e $INTERVAL_END -O $OUT_FILE -m $MODEL_PATH >> $LOG_FILE 2>> $LOG_FILE
+echo "# PREDICTION" >> $LOG_FILE
+python3 web_3DPredictor.py Predictor -N $RNA_SEQ_PRE -C $CTCF_FILE -o $CTCF_ORIENT_PURE_FILE -g $GENOME -c $CHROM -s $INTERVAL_START -e $INTERVAL_END -O $OUT_FILE -m $MODEL_PATH >> $LOG_FILE 2>> $LOG_FILE
 
-# if [[ ${PIPESTATUS[0]} -ne 0 ]];
-# then { trap 'echo "Error: web_3DPredictor.py stopped with exit code 1" >> $LOG_FILE' EXIT; } fi
+if [[ ${PIPESTATUS[0]} -ne 0 ]];
+then { trap 'echo "Error: web_3DPredictor.py stopped with exit code 1" >> $LOG_FILE' EXIT; } fi
 
-# echo "Prediction successfully finished" >> $LOG_FILE
+echo "Prediction successfully finished" >> $LOG_FILE
