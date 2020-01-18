@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     message = MIMEMultipart()
     message['From'] = sender_address
-    message['To'] = receiver_address
+    message['To'] = sys.argv[1]
     message['Subject'] = "3DPredictor Report"
     
     message.attach(MIMEText(mail_content, 'html'))

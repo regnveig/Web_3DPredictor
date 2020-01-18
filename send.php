@@ -1,3 +1,8 @@
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
 <?php
 
 function rmdir_recursive($dir) {
@@ -20,6 +25,7 @@ function generateRandomString($length = 10) {
 }
 
 $C_MIN_INTERVAL=20000;
+$C_MAX_INTERVAL=100000000;
 
 // VARIABLES CHECK
 
@@ -32,6 +38,11 @@ if(($interval_end-$interval_start)<$C_MIN_INTERVAL) {
 	echo "<div style=\"color: red; text-align: center;\">Bad chromosome interval (must be longer than ".strval($C_MIN_INTERVAL)." bp)</div>";
 	exit();
 }
+if(($interval_end-$interval_start)>$C_MAX_INTERVAL) {
+	echo "<div style=\"color: red; text-align: center;\">Too long interval (longer than ".strval($C_MAX_INTERVAL)." bp).<br>Contact authors if you have such a work to be done.</div>";
+	exit();
+}
+
 $model_path=$_POST["model"];
 
 $f_pointer=fopen("trained_models_for_web_3DPredictor/models_description.txt","r");
@@ -83,6 +94,15 @@ if ($exit_code!=0) {
 	exit();
 }
 
+// CHECK QUEUE
+
+$queue_check = exec('echo $(($(screen -ls | wc -l) - 2))', $queue_check, $exit_code);
+if ($queue_check>2) {
+	echo "<div style=\"color: red; text-align: center;\">Too many processes queued. Please try again later.</div>";
+	rmdir_recursive($uploaddir);
+	exit();
+}
+
 // EXEC PIPELINE
 
 $cmd = 'screen -dm ./pipeline.sh '.$uploaddir.' '.$genome_assembly.' '.$chr.' '.$interval_start.' '.$interval_end.' '.$model_path.' '.$email.' '.$UID;
@@ -90,3 +110,5 @@ shell_exec($cmd);
 
 echo "<div style=\"color: green; text-align: center;\">Looks like most things are correct, wait for email :)</div>";
 ?>
+</body>
+</html>
