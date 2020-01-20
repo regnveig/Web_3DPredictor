@@ -1,3 +1,8 @@
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<body>
 <?php
 
 function rmdir_recursive($dir) {
@@ -20,6 +25,7 @@ function generateRandomString($length = 10) {
 }
 
 $C_MIN_INTERVAL=20000;
+$C_MAX_INTERVAL=100000000;
 
 // VARIABLES CHECK
 
@@ -29,12 +35,17 @@ $be=explode(':', $coord)[1];
 $interval_start=intval(preg_replace("/[,]/", "", explode('-', $be)[0]));
 $interval_end=intval(preg_replace("/[,]/", "", explode('-', $be)[1]));
 if(($interval_end-$interval_start)<$C_MIN_INTERVAL) {
-	echo "<div style=\"color: red;\">Bad chromosome interval (must be longer than ".strval($C_MIN_INTERVAL)." bp)</div>";
+	echo "<div style=\"color: red; text-align: center;\">Bad chromosome interval (must be longer than ".strval($C_MIN_INTERVAL)." bp)</div>";
 	exit();
 }
-$model_path="./trained_models_for_web_3DPredictor/".$_POST["model"];
+if(($interval_end-$interval_start)>$C_MAX_INTERVAL) {
+	echo "<div style=\"color: red; text-align: center;\">Too long interval (longer than ".strval($C_MAX_INTERVAL)." bp).<br>Contact authors if you have such a work to be done.</div>";
+	exit();
+}
 
-$f_pointer=fopen("./models_description.txt","r");
+$model_path=$_POST["model"];
+
+$f_pointer=fopen("trained_models_for_web_3DPredictor/models_description.txt","r");
 $cap=fgetcsv($f_pointer,0,"\t");
 while(!feof($f_pointer)){
 	$ar=fgetcsv($f_pointer,0,"\t");
@@ -42,7 +53,7 @@ while(!feof($f_pointer)){
 		$forbidden=explode(",", $ar[4]);
 		$chr_number=substr($chr, 3);
 		if(in_array($chr_number, $forbidden)) {
-			echo "<div style=\"color: red;\">Bad chromosome (used in training), please choose another model</div>";
+			echo "<div style=\"color: red; text-align: center;\">Bad chromosome number (used in training), please choose another model</div>";
 			exit();
 		}
 	}
@@ -59,7 +70,7 @@ mkdir($uploaddir, 0777);
 
 if ($_POST["rna_upload_type"]=="local") {
 	if (!move_uploaded_file($_FILES['rna_local']['tmp_name'], $uploaddir."rna_seq.csv")) {
-		echo "<div style=\"color: red;\">Upload local RNA-Seq file is fucked</div>";
+		echo "<div style=\"color: red; text-align: center;\">Upload local RNA-Seq file is failed</div>";
 		rmdir_recursive($uploaddir);
 		exit();
 	}
@@ -67,7 +78,29 @@ if ($_POST["rna_upload_type"]=="local") {
 
 if ($_POST["ctcf_upload_type"]=="local") {
 	if (!move_uploaded_file($_FILES['ctcf_local']['tmp_name'], $uploaddir."ctcf.csv")) {
-		echo "<div style=\"color: red;\">Upload local CTCF file is fucked</div>";
+		echo "<div style=\"color: red; text-align: center;\">Upload local CTCF file is failed</div>";
+		rmdir_recursive($uploaddir);
+		exit();
+	}
+}
+
+// ftp
+
+if ($_POST["rna_upload_type"]=="ftp") {
+	$upl_cmd = 'wget -q -t 3 -O '.$uploaddir.'rna_seq.csv -nd -l 1 '.$_POST["rna_ftp"];
+	$output = exec($upl_cmd, $output, $exit_code);
+	if ($exit_code!=0) {
+		echo "<div style=\"color: red; text-align: center;\">Upload RNA-Seq file by FTP is failed</div>";
+		rmdir_recursive($uploaddir);
+		exit();
+	}
+}
+
+if ($_POST["ctcf_upload_type"]=="ftp") {
+	$upl_cmd = 'wget -q -t 3 -O '.$uploaddir.'ctcf.csv -nd -l 1 '.$_POST["ctcf_ftp"];
+	$output = exec($upl_cmd, $output, $exit_code);
+	if ($exit_code!=0) {
+		echo "<div style=\"color: red; text-align: center;\">Upload CTCF file by FTP is failed</div>";
 		rmdir_recursive($uploaddir);
 		exit();
 	}
@@ -75,26 +108,29 @@ if ($_POST["ctcf_upload_type"]=="local") {
 
 // FILES CHECK
 
-$command = './env/bin/activate; ./env/bin/python3 ./check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
+$command = './_pyenv/bin/activate; ./_pyenv/bin/python3 check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
 $output = exec($command, $output, $exit_code);
 if ($exit_code!=0) {
-	echo "<div style=\"color: red;\">".$output."</div>";
+	echo "<div style=\"color: red; text-align: center;\">".$output."</div>";
+	rmdir_recursive($uploaddir);
+	exit();
+}
+
+// CHECK QUEUE
+
+$queue_check = exec('echo $(($(screen -ls | wc -l) - 2))', $queue_check, $exit_code);
+if ($queue_check>2) {
+	echo "<div style=\"color: red; text-align: center;\">Too many processes queued. Please try again later.</div>";
 	rmdir_recursive($uploaddir);
 	exit();
 }
 
 // EXEC PIPELINE
 
-$cmd = 'nohup echo "Pizdec!" > '.$uploaddir.'/pizdex.txt';
+$cmd = 'screen -dm ./pipeline.sh '.$uploaddir.' '.$genome_assembly.' '.$chr.' '.$interval_start.' '.$interval_end.' '.$model_path.' '.$email.' '.$UID;
 shell_exec($cmd);
 
-echo "<div style=\"color: green;\">Looks like most things are correct, wait for email :)</div>";
-
-
-echo "<b>Genome:</b> ".$genome_assembly."<br>";
-echo "<b>Chrom:</b> ".$chr."<br>";
-echo "<b>Interval Start:</b> ".$interval_start."<br>";
-echo "<b>Interval End:</b> ".$interval_end."<br>";
-echo "<b>Model path:</b> ".$model_path."<br>";
-echo "<b>Email:</b> ".$email."<br>";
+echo "<div style=\"color: green; text-align: center;\">Looks like most things are correct, wait for email :)</div>";
 ?>
+</body>
+</html>

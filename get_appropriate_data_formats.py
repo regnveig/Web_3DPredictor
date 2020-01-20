@@ -19,5 +19,6 @@ if __name__ == "__main__":
     try:
         get_rna_format_for_3DPredictor(sys.argv[1], sys.argv[2], sys.argv[3])
         sys.exit(0)
-    except:
+    except Exception as err:
+        print("Error: {0}".format(err), file=sys.stderr)
         sys.exit(1)

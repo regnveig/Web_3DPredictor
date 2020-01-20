@@ -1,5 +1,7 @@
+_logs
 _temp
 _pyenv
+$HOME
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
