@@ -96,6 +96,13 @@ then {
 } fi
 echo "Done." >> $LOG_FILE
 
+# HiC Map
+
+#echo "# HiC Map ..." >> $LOG_FILE
+
+#cd ./3Dpredictor/source
+#echo "from matplot2hic import *; "
+
 # Success Email
 
 echo "# Email ..." >> $LOG_FILE
