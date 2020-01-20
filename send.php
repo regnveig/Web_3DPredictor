@@ -84,6 +84,28 @@ if ($_POST["ctcf_upload_type"]=="local") {
 	}
 }
 
+// ftp
+
+if ($_POST["rna_upload_type"]=="ftp") {
+	$upl_cmd = 'wget -q -t 3 -O '.$uploaddir.'rna_seq.csv -nd -l 1 '.$_POST["rna_ftp"];
+	$output = exec($upl_cmd, $output, $exit_code);
+	if ($exit_code!=0) {
+		echo "<div style=\"color: red; text-align: center;\">Upload RNA-Seq file by FTP is failed</div>";
+		rmdir_recursive($uploaddir);
+		exit();
+	}
+}
+
+if ($_POST["ctcf_upload_type"]=="ftp") {
+	$upl_cmd = 'wget -q -t 3 -O '.$uploaddir.'ctcf.csv -nd -l 1 '.$_POST["ctcf_ftp"];
+	$output = exec($upl_cmd, $output, $exit_code);
+	if ($exit_code!=0) {
+		echo "<div style=\"color: red; text-align: center;\">Upload CTCF file by FTP is failed</div>";
+		rmdir_recursive($uploaddir);
+		exit();
+	}
+}
+
 // FILES CHECK
 
 $command = './_pyenv/bin/activate; ./_pyenv/bin/python3 check_file_formats.py "'.$uploaddir.'rna_seq.csv" "'.$uploaddir.'ctcf.csv" 2>&1';
