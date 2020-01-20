@@ -13,7 +13,7 @@ def get_rna_format_for_3DPredictor(RNAseq_file, output_file, genome_assembly):
     if len(FinalData) != len(RNAseq_data):
         logging.getLogger(__name__).warning("Some data missing in Ensembl, "+str(len(RNAseq_data)-len(FinalData)) + " out of "+str(len(RNAseq_data)))
     
-    FinalData.to_csv(output_file, sep="\t",index=False)
+    FinalData[["Chromosome/scaffold name", "Gene start (bp)", "Gene end (bp)", "FPKM", "Gene name"]].to_csv(output_file, sep="\t",index=False)
 
 if __name__ == "__main__": 
     try:

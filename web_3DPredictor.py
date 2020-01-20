@@ -82,7 +82,8 @@ if __name__ == '__main__':
     #you can rename table fields below
     params.RNAseqReader = RNAseqReader(RNA_seq_file,name="RNA")
     #read RNA-seq data and rename table fields
-    params.RNAseqReader.read_file(rename={"FPKM": "sigVal"},sep="\t")
+    params.RNAseqReader.read_file(rename={"FPKM": "sigVal", "Gene start (bp)":"start", "Gene end (bp)":"end",
+                                          "Chromosome/scaffold name":"chr", "Gene name":"gene"},sep="\t")
     # set corresponding predictor generators and its options:
     RNAseqPG = SmallChipSeqPredictorGenerator(params.RNAseqReader,window_size=params.window_size,N_closest=3)
     params.pgs = [OrientCtcfpg, NotOrientCTCFpg, OrientBlocksCTCFpg, RNAseqPG, ConvergentPairPG]
