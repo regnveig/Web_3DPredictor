@@ -51,7 +51,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 <fieldset style="padding: 2em;">
 
 <!-- RNA-Seq -->
-<div class="pure-control-group" title="RNA Seq Data. Format here">
+<div class="pure-control-group" title="RNA Seq Data. See Howto for details">
 <label for="rna-seq_line" class="pure-u-1-3" style="text-align: left;">RNA Seq Data</label>
 <span name="rna-seq_line" style="display: inline-block; text-align: left;" class="pure-radio pure-input-1-3">
 <input id="rna_local_option" type="radio" name="rna_upload_type" value="local" onchange="document.getElementById('rna_local').style.display = 'inline-block'; document.getElementById('rna_ftp').style.display = 'none';" checked> Local&emsp;
@@ -62,7 +62,7 @@ if (item != 'about') { document.getElementById('about').classList.remove('pure-m
 </div>
 
 <!-- CTCF -->
-<div class="pure-control-group" title="CTCF Data. Format here">
+<div class="pure-control-group" title="CTCF Data. See Howto for details">
 <label for="ctcf_line" class="pure-u-1-3" style="text-align: left;">CTCF Data</label>
 <span name="ctcf_line" style="display: inline-block; text-align: left;" class="pure-radio pure-input-1-3">
 <input id="ctcf_local_option" type="radio" name="ctcf_upload_type" value="local" onclick="document.getElementById('ctcf_local').style.display = 'inline-block'; document.getElementById('ctcf_ftp').style.display = 'none';" checked> Local&emsp;
