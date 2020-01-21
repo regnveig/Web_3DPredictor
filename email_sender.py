@@ -5,6 +5,10 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
+from os.path import basename
+from email.mime.application import MIMEApplication
+from email.utils import COMMASPACE, formatdate
+
 if __name__ == "__main__":
     
     sender_address = "web.3dpredictor@gmail.com"
@@ -22,11 +26,13 @@ if __name__ == "__main__":
     message.attach(MIMEText(mail_content, 'html'))
     
     if sys.argv[3] != 'no':
-        attach_file = open(attach_file_name, 'rb')
-        payload = MIMEBase('application', 'octate-stream')
-        payload.set_payload((attach_file).read())
-        encoders.encode_base64(payload)
-        payload.add_header('Content-Decomposition', 'attachment', filename=attach_file_name)
+        #attach_file = open(attach_file_name, 'rb')
+        with open(attach_file_name, "rb") as f: payload = MIMEApplication(f.read(), Name=basename(attach_file_name))
+        payload['Content-Disposition'] = 'attachment; filename="%s"' % basename(attach_file_name)
+        #payload = MIMEBase('application', 'octate-stream')
+        #payload.set_payload((attach_file).read())
+        #encoders.encode_base64(payload)
+        #message.add_header('Content-Decomposition', 'attachment', filename=attach_file_name)
         message.attach(payload)
 
     session = smtplib.SMTP('smtp.gmail.com', 587)

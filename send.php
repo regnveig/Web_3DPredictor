@@ -130,7 +130,7 @@ if ($queue_check>2) {
 $cmd = 'screen -dm ./pipeline.sh '.$uploaddir.' '.$genome_assembly.' '.$chr.' '.$interval_start.' '.$interval_end.' '.$model_path.' '.$email.' '.$UID;
 shell_exec($cmd);
 
-echo "<div style=\"color: green; text-align: center;\">Looks like most things are correct, wait for email :)</div>";
+echo "<script type=\"text/javascript\">alert('Good. Looks like most things are correct. Please wait for email :)');</script>";
 ?>
 </body>
 </html>
