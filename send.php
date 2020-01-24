@@ -25,7 +25,7 @@ function generateRandomString($length = 10) {
 }
 
 $C_MIN_INTERVAL=20000;
-$C_MAX_INTERVAL=100000000;
+$C_MAX_INTERVAL=10000000;
 
 // VARIABLES CHECK
 
