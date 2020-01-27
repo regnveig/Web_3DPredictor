@@ -131,7 +131,7 @@ while(!feof($f_pointer)){
 </form>
 
 <!-- HOWTO BLOCK -->
-<div id="howto_content" style="display: none; padding: 2em;">
+<div id="howto_content" style="display: none; padding: 2em; text-align: left;">
 <?php
 $howto = file_get_contents('howto.txt');
 echo $howto;

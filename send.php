@@ -25,7 +25,7 @@ function generateRandomString($length = 10) {
 }
 
 $C_MIN_INTERVAL=20000;
-$C_MAX_INTERVAL=100000000;
+$C_MAX_INTERVAL=10000000;
 
 // VARIABLES CHECK
 
@@ -119,7 +119,7 @@ if ($exit_code!=0) {
 // CHECK QUEUE
 
 $queue_check = exec('echo $(($(screen -ls | wc -l) - 2))', $queue_check, $exit_code);
-if ($queue_check>2) {
+if ($queue_check>5) {
 	echo "<div style=\"color: red; text-align: center;\">Too many processes queued. Please try again later.</div>";
 	rmdir_recursive($uploaddir);
 	exit();

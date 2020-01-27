@@ -118,4 +118,4 @@ echo "Done." >> $LOG_FILE
 
 # Folder Delete
 
-rm -rf $DATA_FOLDER >> $LOG_FILE 2>> $LOG_FILE
+#rm -rf $DATA_FOLDER >> $LOG_FILE 2>> $LOG_FILE

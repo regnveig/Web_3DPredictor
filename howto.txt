@@ -1,4 +1,60 @@
-<p>
-Hello!
-This is howto.
-</p>
+<h3>What Does This Tool Do?</h3>
+<p>3DPredictor web tool can predict 3D genome contacts map for a chromosome region using information on CTCF binding and gene expression (RNA-Seq data).</p>
+<h3>Input</h3>
+<p>Files can be uploaded from local storage or external public resources, e.g. <a href="https://www.encodeproject.org/" target="_blank">ENCODE</a>, by FTP.</p>
+<h4>CTCF Data</h4>
+<p>Input data must be <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format12" target="_blank">narrowPeak</a> format.
+No header, tab-separated table only is allowed.</p>
+<p>Example:</p>
+<pre class="code code-wrap">
+chr1	840081	840400	treat1_peak_1	69	.	4.89872	10.50944	6.91052	158
+chr1	919419	919785	treat1_peak_2	87	.	5.85158	12.44148	8.70936	130
+chr1	937220	937483	treat1_peak_3	66	.	4.87632	10.06728	6.61759	154
+</pre>
+<p>Columns significant for prediction are the following:</p>
+<ul>
+<li>#1: Chromosome name</li>
+<li>#2: Start position of peak</li>
+<li>#3: End position of peak</li>
+<li>#7: Fold-change</li>
+</ul>
+<h4>RNA-Seq Data</h4>
+<p>RNA-Seq data is to contain fields <tt>gene_id</tt> and <tt>FPKM</tt>.
+<tt>gene_id</tt> can be Ensemble ID or gene name.
+This table must have header.</p>
+<p>Example:</p>
+<pre class="code code-wrap">
+gene_id	Gene Name	Reference	Strand	Start	End	Coverage	FPKM	TPM
+ENSG00000185960.8	SHOX	chrX	+	624344	646823	0.000000	0.000000	0.000000
+ENSG00000002834.13	SHOX	chrX	+	624344	659411	0.000000	0.000000	0.000000
+</pre>
+<aside>
+<p><b>Note:</b> <tt>Gene name</tt> field in your RNA-seq file will be ignored.
+If you would like to use gene name identifiers, place them into <tt>gene_id</tt> column.</p>
+</aside>
+<h3>Genome</h3>
+<p>Genome assembly should be relevant to your CTCF ChIP-seq data.
+For RNA-seq data, genome version has no importance, because genomic coordinates are obtained from Ensembl for each gene/transcript.
+3DPredictor does not use coordinates provided in the uploaded RNA-Seq data.</p>
+<h3>Coordinates</h3>
+<p>Chromosomal region for prediction must correspond to the format you can see on placeholder. 
+Chromosome name is to start with <tt>chr</tt>, and commas are to be used as digit group separators.</p>
+<p>Example:</p>
+<blockquote class="content-quote">chr12:1,000,000-1,200,000</blockquote>
+<aside>
+<p><b>Note:</b> Prediction is allowed at intervals 20kb to 10MB long, resolution 5kb.
+Average processing speed is about 1MB per hour, so this may take long.
+If you need prediction for interval longer than 10MB, please contact authors.</p>
+</aside>
+<h3>Model</h3>
+<p>Trained models for human or mouse data at 5kb resolution are provided.
+We strongly recommend to use model which was not trained on the chromosome of interest, to avoid overfitting.
+E.g., if you need prediction for <tt>chr1</tt>, please use a model trained on even chromosomes.</p>
+<h3>Output</h3>
+<p>3DPredictor produces a gzipped HiC map with 3D-genome contacts.
+Further it's sent to your e-mail with brief prediction report.
+You can visualize this file using <a href="https://www.aidenlab.org/juicebox/" target="_blank">Juicebox</a>. 
+If your job failed, please contact regnveig@yandex.ru.<p>
+
+<p>Enjoy the prediction!
+We hope it might be useful for your research ^_^</p>
