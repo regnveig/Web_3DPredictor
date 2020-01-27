@@ -106,7 +106,6 @@ if __name__ == '__main__':
                 result = generator.contact2predictors(contact_df, params)
                 result_df = pd.DataFrame([[chr, contact_st, contact_en, contact_en-contact_st, 0]+result[1]],
                                         columns=['chr', 'contact_st', 'contact_en', 'contact_dist', "contact_count"]+result[0])
-
                 trained_predictor.validate(result_df, show_plot=False,out_dir=out_file, df_input=True)
                 # print("predicted")
                 # print(trained_predictor.predicted)
