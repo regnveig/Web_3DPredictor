@@ -3,8 +3,9 @@ import pandas as pd
 import logging
 import sys
 import re
+from normalization import quantileNormalize
 
-def get_rna_format_for_3DPredictor(RNAseq_file, output_file, genome_assembly):
+def get_rna_format_for_3DPredictor(RNAseq_file, output_file, genome_assembly, RNAseq_model_file):
 	gene_id_field = 'gene_id'
 	ch_func = lambda x: x.str.upper() if x.map(type).eq(str).all() else x
 	RNAseq_data = pd.read_csv(RNAseq_file, sep="\t").apply(ch_func)
@@ -28,6 +29,9 @@ def get_rna_format_for_3DPredictor(RNAseq_file, output_file, genome_assembly):
 	FinalData.drop_duplicates(subset=["Gene_ID"], keep='first', inplace=True)
 	assert ((len(FinalData) / len(RNAseq_data)) > 0.5), "Merging efficiency is less than 50%"
 	if len(FinalData) != len(RNAseq_data): logging.getLogger(__name__).warning("Some data missing in Ensembl, "+str(len(RNAseq_data)-len(FinalData)) + " out of "+str(len(RNAseq_data)))
+	#normalize FPKM values before
+	RNA_data_model = pd.read_csv(RNAseq_model_file, sep="\t")
+	FinalData = quantileNormalize(FinalData, RNA_data_model)
 	FinalData[["Chromosome/scaffold name", "Gene start (bp)", "Gene end (bp)", "FPKM", "Gene name"]].to_csv(output_file, sep="\t",index=False)
 
 if __name__ == "__main__": get_rna_format_for_3DPredictor(sys.argv[1], sys.argv[2], sys.argv[3])
