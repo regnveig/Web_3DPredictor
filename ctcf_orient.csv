@@ -1,0 +1,3 @@
+Genome not found. Have you installed your genome with genomepy?
+See https://github.com/simonvh/genomepy for details.
+Alternatively, you can specify a FASTA file.
