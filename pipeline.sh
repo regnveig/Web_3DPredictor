@@ -63,7 +63,7 @@ echo "Resolution: "$RESOLUTION"" >> $LOG_FILE
 echo "RNA-Seq Model File: "$RNASEQ_MODEL_PRE"" >> $LOG_FILE
 echo "Email: "$EMAIL"" >> $LOG_FILE
 echo >> $LOG_FILE
-echo "<h1>3DPredictor Report</h1><p><b>Genome assembly:</b> "$2"</p><p><b>Chrom:</b> "$3"</p><p><b>Interval Start:</b> "$4"</p><p><b>Interval End:</b> "$5"</p><p><b>Model:</b> "$6"</p><p><b>Started:</b> "$(date +'%Y-%m-%d %H:%M:%S' --date="@"$START_TIMESTAMP"")" [NSK]</p>" > $MAIL_TEXT
+echo "<h1>3DPredictor Report</h1><p><b>Genome assembly:</b> "$GENOME"</p><p><b>Chrom:</b> "$CHROM"</p><p><b>Interval Start:</b> "$INTERVAL_START"</p><p><b>Interval End:</b> "$INTERVAL_END"</p><p><b>Model:</b> "$MODEL"</p><p><b>Resolution:</b> "$RESOLUTION"</p><p><b>Started:</b> "$(date +'%Y-%m-%d %H:%M:%S' --date="@"$START_TIMESTAMP"")" [NSK]</p>" > $MAIL_TEXT
 
 # CTCF Orient
 
