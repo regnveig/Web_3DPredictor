@@ -1,7 +1,8 @@
 <h3>What Does This Tool Do?</h3>
 <p>3DPredictor web tool can predict 3D genome contacts map for a chromosome region using information on CTCF binding and gene expression (RNA-Seq data).</p>
 <h3>Input</h3>
-<p>Files can be uploaded from local storage or external public resources, e.g. <a href="https://www.encodeproject.org/" target="_blank">ENCODE</a>, by FTP.</p>
+<p>Files can be uploaded from local storage or external public resources, e.g. <a href="https://www.encodeproject.org/" target="_blank">ENCODE</a>, by FTP.
+3DPredictor is definitely omnivorous thing, so it can be fed with gzipped and bzipped files too.</p>
 <h4>CTCF Data</h4>
 <p>Input data must be <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format12" target="_blank">narrowPeak</a> format.
 No header, tab-separated table only is allowed.</p>

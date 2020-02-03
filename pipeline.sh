@@ -47,7 +47,6 @@ MODEL_PATH="./trained_models_for_web_3DPredictor/"$MODEL""
 OUT_FILE=""$DATA_FOLDER"result_predicted.csv"
 HIC_CHROMSIZES=""$DATA_FOLDER"hic_chromsizes.txt"
 HIC_PRE=""$DATA_FOLDER"hic_pre.txt"
-HIC_FILE=""$DATA_FOLDER"result.hic"
 MAIL_TEXT=""$DATA_FOLDER"mail.html"
 
 # pipeline
@@ -56,7 +55,7 @@ START_TIMESTAMP=$(date +%s)
 START_TIME=$(date +'%Y-%m-%d %H:%M:%S' --date="@"$START_TIMESTAMP"")
 
 LOG_FILE="./_logs/"$(date +'%Y%m%d_%H%M%S' --date="@"$START_TIMESTAMP"")"-"$PredUID"_log.txt"
-HIC_FILE_GZIPPED=""$DATA_FOLDER"3DPredictor_result_"$(date +'%Y%m%d_%H%M%S' --date="@"$START_TIMESTAMP"")".hic.gz"
+HIC_FILE=""$DATA_FOLDER"3DPredictor_result_"$(date +'%Y%m%d_%H%M%S' --date="@"$START_TIMESTAMP"")".hic"
 Logo > $LOG_FILE
 echo "COMMAND LINE DATA" >> $LOG_FILE
 echo >> $LOG_FILE
@@ -78,6 +77,7 @@ echo "# Uploads Check ..." >> $LOG_FILE
 echo "CTCF Size: "$(PureBytes $CTCF_FILE)"K, MD5: "$(PureMD5 $CTCF_FILE)"" >> $LOG_FILE
 echo "RNA-Seq Size: "$(PureBytes $RNA_SEQ_FILE)"K, MD5: "$(PureMD5 $RNA_SEQ_FILE)"" >> $LOG_FILE
 echo >> $LOG_FILE
+echo "<p><b>CTCF Size:</b> "$(PureBytes $CTCF_FILE)"K, <b>MD5:</b> "$(PureMD5 $CTCF_FILE)"</p><p><b>RNA-Seq Size:</b> "$(PureBytes $RNA_SEQ_FILE)"K, <b>MD5:</b> "$(PureMD5 $RNA_SEQ_FILE)"</p>" >> $MAIL_TEXT
 
 # CTCF Orient
 
@@ -141,7 +141,7 @@ echo >> $LOG_FILE
 echo "# Email ..." >> $LOG_FILE
 END_TIMESTAMP=$(date +%s)
 DURATION=$(($END_TIMESTAMP - $START_TIMESTAMP))
-echo "<p><b>Duration:</b> "$(date -d@$DURATION -u '+%H h %M min %S sec')"</p><p><b>Status:</b> Success</p><hr><p>Attachment is a gzipped HiC map with predicted contacts.</p>" >> $MAIL_TEXT
+echo "<p><b>Duration:</b> "$(date -d@$DURATION -u '+%H h %M min %S sec')"</p><p><b>Status:</b> Success</p><hr><p>Attachment is a HiC map with predicted contacts.</p>" >> $MAIL_TEXT
 echo ""$(TS)" python3 email_sender.py "$EMAIL" "$MAIL_TEXT" "$HIC_FILE"" >> $LOG_FILE
 python3 email_sender.py ""$EMAIL"" ""$MAIL_TEXT"" ""$HIC_FILE"" >> $LOG_FILE 2>> $LOG_FILE
 echo "Done." >> $LOG_FILE
