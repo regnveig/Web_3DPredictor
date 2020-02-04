@@ -2,6 +2,14 @@
 
 <head>
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-153865145-2"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-153865145-2');
+</script>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
 function MenuClick(item) {
